@@ -21,6 +21,7 @@ const ClearIcon = () => (
 
 export const ValueGrid = () => {
   const [selectedValues, setSelectedValues] = useState([]);
+  const [singleColorMode, setSingleColorMode] = useState(false);
 
   const handleButtonClick = (key) => {
     if (selectedValues.includes(key)) {
@@ -34,6 +35,10 @@ export const ValueGrid = () => {
 
   const handleClearAll = () => {
     setSelectedValues([]);
+  };
+
+  const handleToggleSingleColor = () => {
+    setSingleColorMode(!singleColorMode);
   };
 
   return (
@@ -91,6 +96,22 @@ export const ValueGrid = () => {
           );
         })}
       </div>
+
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}
+      >
+        <label style={{ marginRight: "10px" }}>Single Color Mode:</label>
+        <label className={styles.switch}>
+          <input
+            type="checkbox"
+            checked={singleColorMode}
+            onChange={handleToggleSingleColor}
+          />
+        
+          <span className={styles.slider}></span>
+        </label>
+      </div>
+
       <button
         onClick={handleClearAll}
         style={{
@@ -117,21 +138,30 @@ export const ValueGrid = () => {
           height: "350px",
           borderRadius: "10px",
           overflow: "hidden",
-          width: "500px",
+          width: "425px",
           margin: "30px auto",
         }}
       >
         {Array.from({ length: 5 }).map((_, index) => {
           const selectedKey = selectedValues[index];
+          const backgroundColor = singleColorMode
+            ? selectedValues.length > 0
+              ? /*data[selectedValues[0]].colourHex*/ "#034ea2"
+              : "#e0e0e0"
+            : selectedKey
+            ? data[selectedKey].colourHex
+            : "#e0e0e0";
+
           return (
             <div
               key={index}
               className={styles[`option_${index}`]}
               style={{
                 flex: 1,
-                backgroundColor: selectedKey
-                  ? data[selectedKey].colourHex
-                  : "#e0e0e0",
+                // backgroundColor: selectedKey
+                //   ? data[selectedKey].colourHex
+                //   : "#e0e0e0",
+                backgroundColor: backgroundColor,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -147,6 +177,7 @@ export const ValueGrid = () => {
               {selectedKey ? (
                 <>
                   <span
+                    className={styles.coreValueLabel}
                     style={{
                       fontSize: "24px",
                       fontWeight: "bold",
