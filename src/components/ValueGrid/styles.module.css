@@ -1,0 +1,44 @@
+.grid {
+    display: flex;
+}
+
+.valueBtn{
+    transition: all 350ms ease;
+}
+
+.valueBtn:hover {
+    background-color: #C5C3FA !important;
+    cursor: pointer;
+}
+
+.shortCode {
+    display: block;
+    font-size: 1.5rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.name{
+    text-align: left;
+}
+
+.option_0 {
+    height: 75%;
+    width: 60px !important;
+}
+
+.option_1 {
+    height: 100%;
+}
+
+.option_2 {
+    height: 85%;
+}
+
+.option_3 {
+    height: 50%;
+}
+
+.option_4 {
+    height: 60%;
+}
