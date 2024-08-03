@@ -21,7 +21,10 @@ export default function Home() {
             logo design!
           </p>
         </div>
-        <ValueGrid />
+        <div className={styles.valueGrid}>
+          <ValueGrid />
+        </div>
+        
       </div>
     </main>
   );

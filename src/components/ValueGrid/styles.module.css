@@ -1,5 +1,6 @@
 .grid {
     display: flex;
+    max-width: fit-content;
 }
 
 .valueBtn{

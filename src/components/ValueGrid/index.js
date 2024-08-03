@@ -42,7 +42,7 @@ export const ValueGrid = () => {
   };
 
   return (
-    <div>
+    <div style={{width: '90%', margin: '0 auto'}}>
       <div style={{ marginBottom: "20px" }}>
         {Object.keys(data).map((key) => {
           const isSelected = selectedValues.includes(key);
@@ -138,7 +138,7 @@ export const ValueGrid = () => {
           height: "350px",
           borderRadius: "10px",
           overflow: "hidden",
-          width: "425px",
+          width: "400px",
           margin: "30px auto",
         }}
       >
