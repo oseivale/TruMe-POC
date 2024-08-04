@@ -20,8 +20,25 @@ const ClearIcon = () => (
 );
 
 export const ValueGrid = () => {
+    // Predefined colors for the user to choose from
+const colorOptions = ["#FF5733", "#33FF57", "#3357FF", "#FFD700", "#FF33A8"];
+
+// Color palettes for the user to choose from
+const palettes = {
+    blue: ["#003f5c", "#2f4b7c", "#665191", "#a05195", "#d45087"],
+    green: ["#006400", "#228B22", "#32CD32", "#7CFC00", "#ADFF2F"],
+    red: ["#8B0000", "#B22222", "#DC143C", "#FF4500", "#FF6347"],
+  };
+
+const [selectedColor, setSelectedColor] = useState(null); // To store the selected color
+
   const [selectedValues, setSelectedValues] = useState([]);
   const [singleColorMode, setSingleColorMode] = useState(false);
+  const [selectedPalette, setSelectedPalette] = useState(null); // To store the selected palette
+
+
+  // Custom order for mapping selected values to bars
+  const customBarOrder = [2, 0, 1, 4, 3];
 
   const handleButtonClick = (key) => {
     if (selectedValues.includes(key)) {
@@ -35,11 +52,39 @@ export const ValueGrid = () => {
 
   const handleClearAll = () => {
     setSelectedValues([]);
+    setSelectedColor(null); // Clear the selected color
+    setSingleColorMode(false); // Turn off single color mode
+    setSelectedPalette(null);
   };
 
-  const handleToggleSingleColor = () => {
+const handleToggleSingleColor = () => {
     setSingleColorMode(!singleColorMode);
+    if (!singleColorMode) {
+      setSelectedColor(null); // Deselect the preset color if Single Color Mode is activated
+      setSelectedPalette(null);
+    }
   };
+  const handleColorSelection = (color) => {
+    if (selectedColor === color) {
+      setSelectedColor(null); // Deselect the color
+    } else {
+      setSelectedColor(color);
+      setSingleColorMode(false); // Turn off single color mode
+      setSelectedPalette(null);
+
+    }
+  };
+
+  const handlePaletteSelection = (palette) => {
+    if (selectedPalette === palette) {
+      setSelectedPalette(null); // Deselect the palette
+    } else {
+      setSelectedPalette(palette);
+      setSingleColorMode(false); // Turn off single color mode
+      setSelectedColor(null); // Deselect any custom color
+    }
+  };
+
 
   return (
     <div style={{width: '90%', margin: '0 auto'}}>
@@ -112,6 +157,46 @@ export const ValueGrid = () => {
         </label>
       </div>
 
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ marginRight: '10px' }}>Pick a Custom Color:</label>
+        {colorOptions.map((color) => (
+          <button
+            key={color}
+            onClick={() => handleColorSelection(color)}
+            style={{
+              backgroundColor: color,
+              width: '30px',
+              height: '30px',
+              margin: '0 5px',
+              border: selectedColor === color ? '3px solid #000' : 'none',
+              borderRadius: '50%',
+              cursor: 'pointer',
+            }}
+          />
+        ))}
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ marginRight: '10px' }}>Pick a Palette:</label>
+        {Object.keys(palettes).map((palette) => (
+          <button
+            key={palette}
+            onClick={() => handlePaletteSelection(palette)}
+            style={{
+              backgroundColor: palettes[palette][2], // Displaying the middle color as the button color
+              width: '60px',
+              height: '30px',
+              margin: '0 5px',
+              border: selectedPalette === palette ? '3px solid #000' : 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+          >
+            {palette.charAt(0).toUpperCase() + palette.slice(1)}
+          </button>
+        ))}
+      </div>
+
       <button
         onClick={handleClearAll}
         style={{
@@ -143,14 +228,45 @@ export const ValueGrid = () => {
         }}
       >
         {Array.from({ length: 5 }).map((_, index) => {
-          const selectedKey = selectedValues[index];
-          const backgroundColor = singleColorMode
-            ? selectedValues.length > 0
-              ? /*data[selectedValues[0]].colourHex*/ "#034ea2"
-              : "#e0e0e0"
-            : selectedKey
-            ? data[selectedKey].colourHex
-            : "#e0e0e0";
+  
+
+        // const barIndex = customBarOrder[index];
+        //   const selectedKey = selectedValues[barIndex];
+        //   const backgroundColor = singleColorMode
+        //     ? selectedValues.length > 1
+        //       ? data[selectedValues[0]].colourHex
+        //       : '#e0e0e0'
+        //     : selectedColor
+        //     ? selectedColor
+        //     : selectedKey
+        //     ? data[selectedKey].colourHex
+        //     : '#e0e0e0';
+
+           // Determine the appropriate color for each bar
+           const barIndex = customBarOrder[index];
+           const selectedKey = selectedValues[barIndex];
+ 
+           let backgroundColor;
+ 
+           if (singleColorMode) {
+             // In single color mode, use the first selected value's color or the custom color
+             backgroundColor = selectedValues.length > 1 
+               ? data[selectedValues[0]].colourHex 
+               : selectedValues.length === 1 
+               ? data[selectedValues[0]].colourHex 
+               : '#e0e0e0';
+           } else if (selectedPalette) {
+             // If a palette is selected, use the corresponding color from the palette
+             backgroundColor = palettes[selectedPalette][index];
+           } else if (selectedColor) {
+             // Use the custom selected color if no palette is selected
+             backgroundColor = selectedColor;
+           } else {
+             // Default behavior for individual value selection
+             backgroundColor = selectedKey 
+               ? data[selectedKey].colourHex 
+               : '#e0e0e0';
+           }
 
           return (
             <div
@@ -158,9 +274,7 @@ export const ValueGrid = () => {
               className={styles[`option_${index}`]}
               style={{
                 flex: 1,
-                // backgroundColor: selectedKey
-                //   ? data[selectedKey].colourHex
-                //   : "#e0e0e0",
+            
                 backgroundColor: backgroundColor,
                 display: "flex",
                 flexDirection: "column",
