@@ -190,6 +190,7 @@ const handleToggleSingleColor = () => {
               border: selectedPalette === palette ? '3px solid #000' : 'none',
               borderRadius: '5px',
               cursor: 'pointer',
+              color: 'white'
             }}
           >
             {palette.charAt(0).toUpperCase() + palette.slice(1)}
