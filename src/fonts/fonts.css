@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'CanelaTrial-LightItalic';
+    src: url('./CanelaTrial-LightItalic.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Landasans';
+    src: url('./Landasans_demo01-Regular.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Metropolis';
+    src: url('./Metropolis-Light.otf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }

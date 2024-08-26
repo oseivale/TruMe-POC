@@ -22,11 +22,18 @@
 .coreValueLabel {
     opacity: 1;
     animation: fadeIn 700ms ease;
+    font-family: 'CanelaTrial-LightItalic', sans-serif;
+    /* font-family: 'Landasans', sans-serif; */
+    /* font-family: 'Metropolis', sans-serif; */
 }
 
 .name{
     text-align: left;
 }
+/* 
+#logo {
+    font-family: 'CanelaTrial-LightItalic', sans-serif;
+} */
 
 .option_0 {
     height: 75%;
@@ -35,21 +42,26 @@
 
 .option_1 {
     height: 100%;
+    font-size: 2rem;
+    font-family: 'CanelaTrial-LightItalic', sans-serif;
     transition: all 750ms ease;
 }
 
 .option_2 {
     height: 85%;
+    font-family: 'CanelaTrial-LightItalic', sans-serif;
     transition: all 750ms ease;
 }
 
 .option_3 {
     height: 50%;
+    font-family: 'CanelaTrial-LightItalic', sans-serif;
     transition: all 750ms ease;
 }
 
 .option_4 {
     height: 60%;
+    font-family: 'CanelaTrial-LightItalic', sans-serif;
     transition: all 750ms ease;
 }
 
