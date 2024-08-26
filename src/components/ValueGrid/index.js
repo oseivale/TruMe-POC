@@ -4,6 +4,8 @@ import styles from "./styles.module.css";
 import { data } from "../../data";
 import React, { useState, useRef } from "react";
 import { toPng, toJpeg } from "html-to-image";
+// import { Cloudinary } from 'cloudinary-core';
+import PlaceOrder from '../TestPlaceOrder'
 import "../../fonts/fonts.css";
 
 const ClearIcon = () => (
@@ -22,6 +24,35 @@ const ClearIcon = () => (
 );
 
 export const ValueGrid = () => {
+    const [imageUrls, setImageUrls] = useState(null);
+
+  const handleUpload = async (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = async () => {
+      const imageData = reader.result;
+
+      // Call the new API route to upload the image
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imageData, publicId: 'custom_image' }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setImageUrls(data); // Store the image URLs
+      } else {
+        console.error('Error uploading image:', data.error);
+      }
+    };
+
+    reader.readAsDataURL(file);
+  };
   // Predefined colors for the user to choose from
   const colorOptions = ["#FF5733", "#33FF57", "#3357FF", "#FFD700", "#FF33A8"];
 
@@ -87,6 +118,7 @@ export const ValueGrid = () => {
     }
   };
 
+
   const handleDownloadImage = () => {
     if (logoRef.current) {
       // Get the dimensions of the logo element
@@ -120,6 +152,7 @@ export const ValueGrid = () => {
       }, 100); // Adjust the timeout as needed
     }
   };
+
 
   return (
     <div style={{ width: "90%", margin: "0 auto" }}>
@@ -383,6 +416,18 @@ export const ValueGrid = () => {
           );
         })}
       </div>
+      <div>
+      <input type="file" onChange={handleUpload} />
+      {imageUrls && (
+        <div>
+          <img src={imageUrls.uploadResult.secure_url} alt="Uploaded Image" />
+          <p>Optimized Image URL: {imageUrls.optimizeUrl}</p>
+          <p>Auto-Cropped Image URL: {imageUrls.autoCropUrl}</p>
+        </div>
+      )}
+    </div>
+    {/* <PlaceOrder imageData={imageUrls?.uploadResult?.secure_url} /> */}
+    <PlaceOrder />
     </div>
   );
 };
